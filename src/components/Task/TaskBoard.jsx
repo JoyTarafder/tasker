@@ -3,6 +3,7 @@ import AddTaskModal from "./AddTaskModal";
 import SearchTask from "./SearchTask";
 import TaskAction from "./TaskAction";
 import TaskList from "./TaskList";
+import NoTaskFound from "./NoTaskFound";
 
 export default function TaskBoard() {
   const defTask = {
@@ -45,16 +46,39 @@ export default function TaskBoard() {
     tasks.length = 0;
     setTasks([...tasks])
   }
+  function handleFavorite(taskId){
+    setTasks(
+      tasks.map((task) =>
+        task.id === taskId ? { ...task, isFavorite: !task.isFavorite } : task
+      )
+    );
+  }
+  function handleSearch(searchTask){
+    if(searchTask){
+      setTasks(
+        tasks.filter((task) => task.title.toLowerCase().includes(searchTask.toLowerCase()))
+      );
+    }else{
+      setTasks([...tasks]);
+    }
+  }
   return (
     <section className="mb-20" id="tasks">
       {showAddModal && (
         <AddTaskModal onSave={handleAddTask} onCloseClick={handleCloseClick} taskToUpdate={taskToUpdate} />
       )}
       <div className="container">
-        <SearchTask />
+        <SearchTask onSearch={handleSearch}/>
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
           <TaskAction onAddClick={() => setShowAddModal(true)} onDeleteAllClick={handeleteAllClick}/>
-          <TaskList tasks={tasks} onEdit={onEditTask} onDelete={handeleteAddTask} />
+          {
+            tasks.length > 0 ? (
+              <TaskList tasks={tasks} onFav={handleFavorite} onEdit={onEditTask} onDelete={handeleteAddTask}/>
+              
+            ) : (
+              <NoTaskFound/>
+            )
+          }
         </div>
       </div>
     </section>
