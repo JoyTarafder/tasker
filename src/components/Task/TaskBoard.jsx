@@ -38,6 +38,13 @@ export default function TaskBoard() {
     setShowAddModal(false);
     setTaskToUpdate(null);
   }
+  function handeleteAddTask(taskId){
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  }
+  function handeleteAllClick(){
+    tasks.length = 0;
+    setTasks([...tasks])
+  }
   return (
     <section className="mb-20" id="tasks">
       {showAddModal && (
@@ -46,8 +53,8 @@ export default function TaskBoard() {
       <div className="container">
         <SearchTask />
         <div className="rounded-xl border border-[rgba(206,206,206,0.12)] bg-[#1D212B] px-6 py-8 md:px-9 md:py-16">
-          <TaskAction onAddClick={() => setShowAddModal(true)} />
-          <TaskList tasks={tasks} onEdit={onEditTask} />
+          <TaskAction onAddClick={() => setShowAddModal(true)} onDeleteAllClick={handeleteAllClick}/>
+          <TaskList tasks={tasks} onEdit={onEditTask} onDelete={handeleteAddTask} />
         </div>
       </div>
     </section>
