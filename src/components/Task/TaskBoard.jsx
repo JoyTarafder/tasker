@@ -34,10 +34,14 @@ export default function TaskBoard() {
     setTaskToUpdate(task);
     setShowAddModal(true);
   }
+  function handleCloseClick(){
+    setShowAddModal(false);
+    setTaskToUpdate(null);
+  }
   return (
     <section className="mb-20" id="tasks">
       {showAddModal && (
-        <AddTaskModal onSave={handleAddTask} taskToUpdate={taskToUpdate} />
+        <AddTaskModal onSave={handleAddTask} onCloseClick={handleCloseClick} taskToUpdate={taskToUpdate} />
       )}
       <div className="container">
         <SearchTask />
